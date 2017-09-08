@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Hightlight Vocabulary</title>
+	<link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+	<style type="text/css">
+		.bg-warning{
+			background: yellow;
+		}
+		.text-danger{
+			color: red
+		}
+	</style>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="col-md-4 col-sm-12 col-xs-12">
+			<form id="frmInput">
+				<div class="form-group">
+					<label for="para">Paragraph</label>
+					<textarea class="form-control" id="para" style="height: 200px"></textarea>
+				</div>
+				<div class="form-group">
+					<label for="voc">Vocabularies </label>
+					<input type="text" class="form-control" id="voc">
+				</div>
+				<button class="btn btn-success" type="submit">Submit</button>
+			</form>
+		</div>
+		<div class="col-md-8 col-sm-12 col-xs-12">
+			<div class="form-group">
+				<label for="para">Result</label>
+				<div id="result"></div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript">
+	$('#frmInput').submit(function(e){
+	e.preventDefault();
+	var vocs = $('#frmInput').find('input').val();
+	var para = $('#frmInput').find('textarea').val().replace(new RegExp("\n", 'g'), '<br />');
+
+	vocs = vocs.split(',');
+	var length = vocs.length;
+	$.each(vocs, function(i,v){
+		v = ' '+v.trim();
+		var regex = [new RegExp(v+'\\.', 'g'),new RegExp(v+',', 'g'),new RegExp(v+' ', 'g')];
+		var spec = ['.',',',' '];
+		for(val in regex){
+			para = para.replace(regex[val], '<span class="bg-warning"><span class="text-danger">'+v+'</span></span>'+spec[val]);
+		}
+		if(!--length){
+        	$('#result').html(para);
+		}
+	});
+	
+})
+</script>
+</html>
